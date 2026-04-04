@@ -2,10 +2,12 @@
 -- Declare player
 local player = {}
 
--- Initialize variables
+local screenWidth = love.graphics.getWidth()
+local screenHeight = love.graphics.getHeight()
+
 function player:load()
-    self.x = love.graphics.getWidth() / 2
-    self.y = love.graphics.getHeight() / 2
+    self.x = screenWidth / 2
+    self.y = screenHeight / 2
     self.angle = 0
     self.shape = {20, 0, -10, -10, -10, 10}
     self.vx = 0
@@ -30,6 +32,18 @@ function player:update(dt)
     -- Apply velocity
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
+
+    -- Screen wrapping
+    if self.x < 0 then
+        self.x = screenWidth
+    elseif self.x > screenWidth then
+        self.x = 0
+    end
+    if self.y < 0 then
+        self.y = screenHeight
+    elseif self.y > screenHeight then
+        self.y = 0
+    end
 end
 
 function player:draw()
