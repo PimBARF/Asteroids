@@ -1,6 +1,7 @@
----- player.lua ----
--- Declare player
+-- player.lua --
 local player = {}
+local bullets = require("bullets")
+local utils = require("utils")
 
 local screenWidth = love.graphics.getWidth()
 local screenHeight = love.graphics.getHeight()
@@ -13,9 +14,19 @@ function player:load()
     self.vx = 0
     self.vy = 0
     self.speed = 100
+    self.fireTimer = 0
+    self.fireRate = 0.5
 end
 
 function player:update(dt)
+    self.fireTimer = self.fireTimer - dt
+
+    -- Keyboard space for shooting
+    if love.keyboard.isDown("space") and self.fireTimer <= 0 then
+        bullets:spawn(self.x, self.y, self.angle)
+        self.fireTimer = self.fireRate
+    end
+
     -- Keyboard left and right for angle
     if love.keyboard.isDown("left") then
         self.angle = self.angle - 5 * dt
@@ -34,16 +45,7 @@ function player:update(dt)
     self.y = self.y + self.vy * dt
 
     -- Screen wrapping
-    if self.x < 0 then
-        self.x = screenWidth
-    elseif self.x > screenWidth then
-        self.x = 0
-    end
-    if self.y < 0 then
-        self.y = screenHeight
-    elseif self.y > screenHeight then
-        self.y = 0
-    end
+    utils.wrap(self)
 end
 
 function player:draw()
