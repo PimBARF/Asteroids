@@ -1,9 +1,14 @@
 -- asteroids.lua --
 local asteroids = {}
-local bullets = require("bullets")
 local utils = require("utils")
 
 asteroids.list = {}
+
+local sizes = {
+    [1] = 10,
+    [2] = 20,
+    [3] = 30
+}
 
 -- Spawn an asteroid (insert it into asteroids.list)
 function asteroids:spawn(x, y, angle, speed, size)
@@ -32,13 +37,7 @@ end
 
 function asteroids:draw()
     for _, a in ipairs(self.list) do
-        if a.size == 3 then
-            love.graphics.circle("fill", a.x, a.y, 30)
-        elseif a.size == 2 then
-            love.graphics.circle("fill", a.x, a.y, 20)
-        elseif a.size == 1 then
-            love.graphics.circle("fill", a.x, a.y, 10)
-        end
+        love.graphics.circle("fill", a.x, a.y, sizes[a.size])
     end
 end
 
