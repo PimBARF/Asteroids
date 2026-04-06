@@ -27,7 +27,7 @@ function player:update(dt)
 
     -- Keyboard space for shooting
     if love.keyboard.isDown("space") and self.fireTimer <= 0 then
-        bullets:spawn(self.x, self.y, self.angle)
+        bullets:spawn(self.x, self.y, self.angle, self.vx, self.vy)
         self.fireTimer = self.fireRate
     end
 

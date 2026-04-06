@@ -3,6 +3,7 @@ local player = require("player")
 local bullets = require("bullets")
 local asteroids = require("asteroids")
 local utils = require("utils")
+local sounds = require("sounds")
 
 local collisions = {}
 
@@ -17,6 +18,7 @@ function collisions.check()
             if utils.isColliding(b, a) then
                 table.remove(bullets.list, i)
                 pointsEarned = pointsEarned + 1
+                sounds:play("explode")
                 asteroids:split(a, j)
                 break
             end
@@ -28,6 +30,7 @@ function collisions.check()
         local a = asteroids.list[i]
         if utils.isColliding(player, a) and player.invincible <= 0 then
             player.lives = player.lives - 1
+            sounds:play("explode")
             player.invincible = 2
             player.x = love.graphics.getWidth() / 2
             player.y = love.graphics.getHeight() / 2

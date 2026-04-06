@@ -1,21 +1,24 @@
 -- bullets.lua --
 local bullets = {}
 local utils = require("utils")
+local sounds = require("sounds")
 
 bullets.list = {}
 
 -- Spawn a bullet (insert it into bullets.list)
-function bullets:spawn(x, y, angle)
+function bullets:spawn(x, y, angle, shipVx, shipVy)
+    local bulletSpeed = 600
     local b = {
         x = x,
         y = y,
         angle = angle,
-        vx = math.cos(angle) * 600,
-        vy = math.sin(angle) * 600,
+        vx = shipVx + math.cos(angle) * bulletSpeed,
+        vy = shipVy + math.sin(angle) * bulletSpeed,
         life = 1.5 -- seconds
     }
     b.collider = { type = "circle", radius = 2 }
     table.insert(self.list, b)
+    sounds:play("shoot")
 end
 
 function bullets:update(dt)
