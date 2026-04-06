@@ -14,6 +14,7 @@ function bullets:spawn(x, y, angle)
         vy = math.sin(angle) * 500,
         life = 1.5 -- seconds
     }
+    b.collider = { type = "circle", radius = 2 }
     table.insert(self.list, b)
 end
 

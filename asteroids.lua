@@ -4,7 +4,7 @@ local utils = require("utils")
 
 asteroids.list = {}
 
-local sizes = {
+asteroids.sizes = {
     [1] = 10,
     [2] = 20,
     [3] = 30
@@ -21,6 +21,7 @@ function asteroids:spawn(x, y, angle, speed, size)
         vx = math.cos(angle) * speed,
         vy = math.sin(angle) * speed
     }
+    a.collider = { type = "circle", radius = self.sizes[a.size] }
     table.insert(self.list, a)
 end
 
@@ -37,8 +38,19 @@ end
 
 function asteroids:draw()
     for _, a in ipairs(self.list) do
-        love.graphics.circle("fill", a.x, a.y, sizes[a.size])
+        love.graphics.circle("fill", a.x, a.y, self.sizes[a.size])
     end
+end
+
+-- Asteroid splitting function
+function asteroids:split(a, index)
+    if a.size > 1 then
+        local newSize = a.size - 1
+        local newSpeed = a.speed * 1.3 -- add some speed
+        asteroids:spawn(a.x, a.y, a.angle + math.pi/4, newSpeed, newSize)
+        asteroids:spawn(a.x, a.y, a.angle - math.pi/4, newSpeed, newSize)
+    end
+    table.remove(asteroids.list, index)
 end
 
 return asteroids

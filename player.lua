@@ -11,6 +11,7 @@ function player:load()
     self.y = screenHeight / 2
     self.angle = 0
     self.shape = {20, 0, -10, -10, -10, 10}
+    self.collider = { type = "circle", radius = 15 }
     self.vx = 0
     self.vy = 0
     self.speed = 100
