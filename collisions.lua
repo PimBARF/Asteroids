@@ -23,8 +23,14 @@ function collisions.check()
     -- Player vs Asteroid
     for i = #asteroids.list, 1, -1 do
         local a = asteroids.list[i]
-        if utils.isColliding(player, a) then
-            -- player loses life
+        if utils.isColliding(player, a) and player.invincible <= 0 then
+            player.lives = player.lives - 1
+            player.invincible = 2
+            player.x = love.graphics.getWidth() / 2
+            player.y = love.graphics.getHeight() / 2
+            player.vx = 0
+            player.vy = 0
+            break
         end
     end
 end

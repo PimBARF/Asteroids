@@ -17,10 +17,13 @@ function player:load()
     self.speed = 100
     self.fireTimer = 0
     self.fireRate = 0.5
+    self.lives = 3
+    self.invincible = 0
 end
 
 function player:update(dt)
     self.fireTimer = self.fireTimer - dt
+    self.invincible = math.max(0, self.invincible - dt)
 
     -- Keyboard space for shooting
     if love.keyboard.isDown("space") and self.fireTimer <= 0 then
