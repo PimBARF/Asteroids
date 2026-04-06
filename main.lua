@@ -9,6 +9,8 @@ local gameState = "menu"
 local score = 0
 
 function love.load()
+    math.randomseed(os.time())
+
     player:load()
 end
 
@@ -20,6 +22,13 @@ function love.update(dt)
         asteroids:update(dt)
         local points = collisions.check()
         score = score + points
+
+        -- If all asteroids are gone, generate new asteroids
+        if #asteroids.list == 0 then
+            -- Generate minimum of 3 asteroids based on score
+            local count = (score / 20) + 3
+            asteroids:generate(count, player.x, player.y)
+        end
 
         -- No more lives, set game to gameover
         if player.lives <= 0 then
@@ -54,8 +63,6 @@ function resetGame()
     bullets.list = {} -- reset bullets
     asteroids.list = {} -- reset asteroids
 
-    -- Spawn placeholder asteroids until spawn function is made
-    asteroids:spawn(50, 20, 1, 100, 3)
-    asteroids:spawn(200, 150, 0.5, 120, 2)
-    asteroids:spawn(700, 500, 2, 200, 1)
+    -- Generate 3 asteroids
+    asteroids:generate(3, player.x, player.y)
 end
