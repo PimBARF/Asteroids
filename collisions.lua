@@ -7,6 +7,8 @@ local utils = require("utils")
 local collisions = {}
 
 function collisions.check()
+    local pointsEarned = 0
+
     -- Bullet vs Asteroid
     for i = #bullets.list, 1, -1 do
         local b = bullets.list[i]
@@ -14,6 +16,7 @@ function collisions.check()
             local a = asteroids.list[j]
             if utils.isColliding(b, a) then
                 table.remove(bullets.list, i)
+                pointsEarned = pointsEarned + 1
                 asteroids:split(a, j)
                 break
             end
@@ -33,6 +36,8 @@ function collisions.check()
             break
         end
     end
+
+    return pointsEarned
 end
 
 return collisions

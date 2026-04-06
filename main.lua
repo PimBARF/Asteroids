@@ -6,6 +6,7 @@ local collisions = require("collisions")
 local ui = require("ui")
 
 local gameState = "menu"
+local score = 0
 
 function love.load()
     player:load()
@@ -17,7 +18,8 @@ function love.update(dt)
         player:update(dt)
         bullets:update(dt)
         asteroids:update(dt)
-        collisions.check()
+        local points = collisions.check()
+        score = score + points
 
         -- No more lives, set game to gameover
         if player.lives <= 0 then
@@ -40,9 +42,9 @@ function love.draw()
         player:draw()
         bullets:draw()
         asteroids:draw()
-        ui:drawHUD()
+        ui:drawHUD(score)
     elseif gameState == "gameover" then
-        ui:drawGameOver()
+        ui:drawGameOver(score)
     end
 end
 

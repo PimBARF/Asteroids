@@ -22,17 +22,19 @@ function ui:drawMenu()
 end
 
 -- Draw the HUD during the game
-function ui:drawHUD()
+function ui:drawHUD(score)
     love.graphics.setFont(smallFont)
     love.graphics.print("Lives: " .. player.lives, 0, 0)
+    love.graphics.print("Score: " .. score, 0, 20)
 end
 
 -- Draw the Game Over screen
-function ui:drawGameOver()
+function ui:drawGameOver(score)
     love.graphics.setFont(bigFont)
-    love.graphics.printf("GAME OVER", 0, screenHeight / 2 - 50, screenWidth, "center")
+    love.graphics.printf("GAME OVER", 0, 20, screenWidth, "center")
     love.graphics.setFont(mediumFont)
-    love.graphics.printf("Press ENTER to restart", 0, screenHeight / 2 + 20, screenWidth, "center")
+    love.graphics.printf("Total score: " .. score, 0, 60, screenWidth, "center")
+    love.graphics.printf("Press ENTER to restart", 0, screenHeight / 2, screenWidth, "center")
 end
 
 return ui
