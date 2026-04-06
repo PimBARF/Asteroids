@@ -12,7 +12,7 @@ function bullets:spawn(x, y, angle)
         angle = angle,
         vx = math.cos(angle) * 600,
         vy = math.sin(angle) * 600,
-        life = 1.2 -- seconds
+        life = 1.5 -- seconds
     }
     b.collider = { type = "circle", radius = 2 }
     table.insert(self.list, b)

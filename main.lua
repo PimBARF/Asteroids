@@ -8,9 +8,18 @@ local ui = require("ui")
 local gameState = "menu"
 local score = 0
 
+local function resetGame()
+    score = 0
+    player:load() -- reset player
+    bullets.list = {} -- reset bullets
+    asteroids.list = {} -- reset asteroids
+
+    -- Generate 3 asteroids
+    --asteroids:generate(3, player.x, player.y)
+end
+
 function love.load()
     math.randomseed(os.time())
-
     player:load()
 end
 
@@ -27,7 +36,7 @@ function love.update(dt)
         if #asteroids.list == 0 then
             -- Generate minimum of 3 asteroids based on score
             local count = (score / 20) + 3
-            asteroids:generate(count, player.x, player.y)
+            --asteroids:generate(count, player.x, player.y)
         end
 
         -- No more lives, set game to gameover
@@ -55,14 +64,4 @@ function love.draw()
     elseif gameState == "gameover" then
         ui:drawGameOver(score)
     end
-end
-
-function resetGame()
-    score = 0
-    player:load() -- reset player
-    bullets.list = {} -- reset bullets
-    asteroids.list = {} -- reset asteroids
-
-    -- Generate 3 asteroids
-    asteroids:generate(3, player.x, player.y)
 end

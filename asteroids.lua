@@ -81,7 +81,7 @@ end
 function asteroids:split(a, index)
     if a.size > 1 then
         local newSize = a.size - 1
-        local newSpeed = a.speed * 1.3 -- add some speed
+        local newSpeed = a.speed * 1.1 -- add some speed
         asteroids:spawn(a.x, a.y, a.angle + math.pi/4, newSpeed, newSize)
         asteroids:spawn(a.x, a.y, a.angle - math.pi/4, newSpeed, newSize)
     end

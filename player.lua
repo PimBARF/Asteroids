@@ -14,7 +14,7 @@ function player:load()
     self.collider = { type = "circle", radius = 15 }
     self.vx = 0
     self.vy = 0
-    self.speed = 100
+    self.speed = 300
     self.fireTimer = 0
     self.fireRate = 0.5
     self.lives = 3
@@ -43,6 +43,25 @@ function player:update(dt)
         self.vx = self.vx + math.cos(self.angle) * self.speed * dt
         self.vy = self.vy + math.sin(self.angle) * self.speed * dt
     end
+
+    -- Keyboard down for braking
+    -- Calculate the current speed
+    local currentSpeed = math.sqrt(self.vx^2 + self.vy^2)
+    if love.keyboard.isDown("down") and currentSpeed > 0 then
+        local brakeForce = 200
+        self.vx = self.vx - (self.vx / currentSpeed) * brakeForce * dt
+        self.vy = self.vy - (self.vy / currentSpeed) * brakeForce * dt
+
+        -- Prevent jitter if braking makes speed goe below zero
+        if math.sqrt(self.vx^2 + self.vy^2) > currentSpeed then
+            self.vx, self.vy = 0, 0
+        end
+    end
+
+    -- Apply artificial drag for more natural movement
+    local drag = 0.5
+    self.vx = self.vx * (1 - drag * dt)
+    self.vy = self.vy * (1 - drag * dt)
 
     -- Apply velocity
     self.x = self.x + self.vx * dt
