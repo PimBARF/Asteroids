@@ -27,7 +27,6 @@ end
 
 function asteroids:generate(count, playerX, playerY)
     local screenWidth, screenHeight = love.graphics.getDimensions()
-    local centerX, centerY = screenWidth / 2, screenHeight / 2
 
     -- Target player OR center of screen if no player position is known
     local targetX = playerX or (screenWidth / 2)
