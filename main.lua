@@ -8,6 +8,7 @@ local sounds = require("sounds")
 
 local gameState = "menu"
 local score = 0
+local shakeTime = 0
 
 local function resetGame()
     score = 0
@@ -26,13 +27,22 @@ function love.load()
 end
 
 function love.update(dt)
+    -- Lower the shakeTime every frame
+    if shakeTime > 0 then
+        shakeTime = shakeTime - dt
+    end
+
     if gameState == "playing" then
         -- Game is playing
         player:update(dt)
         bullets:update(dt)
         asteroids:update(dt)
-        local points = collisions.check()
+        local points, hit = collisions.check()
         score = score + points
+
+        if hit then
+            triggerShake(0.2)
+        end
 
         -- If all asteroids are gone, generate new asteroids
         if #asteroids.list == 0 then
@@ -56,14 +66,27 @@ function love.update(dt)
 end
 
 function love.draw()
-    if gameState == "menu" then
-        ui:drawMenu()
-    elseif gameState == "playing" then
-        player:draw()
-        bullets:draw()
-        asteroids:draw()
-        ui:drawHUD(score)
-    elseif gameState == "gameover" then
-        ui:drawGameOver(score)
-    end
+    love.graphics.push()
+        if shakeTime > 0 then
+            -- Shake the screen by a few pixelx
+            local intensity = 5
+            love.graphics.translate(math.random(-intensity, intensity), math.random(-intensity, intensity))
+        end
+
+        if gameState == "menu" then
+            ui:drawMenu()
+        elseif gameState == "playing" then
+            player:draw()
+            bullets:draw()
+            asteroids:draw()
+            ui:drawHUD(score)
+        elseif gameState == "gameover" then
+            ui:drawGameOver(score)
+        end
+    love.graphics.pop()
+end
+
+-- Trigger the shake for a given amount of time in seconds
+function triggerShake(time)
+    shakeTime = time
 end

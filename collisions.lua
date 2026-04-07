@@ -9,6 +9,7 @@ local collisions = {}
 
 function collisions.check()
     local pointsEarned = 0
+    local playerHit = false
 
     -- Bullet vs Asteroid
     for i = #bullets.list, 1, -1 do
@@ -30,6 +31,7 @@ function collisions.check()
         local a = asteroids.list[i]
         if utils.isColliding(player, a) and player.invincible <= 0 then
             player.lives = player.lives - 1
+            playerHit = true
             sounds:play("explode")
             player.invincible = 2
             player.x = love.graphics.getWidth() / 2
@@ -40,7 +42,7 @@ function collisions.check()
         end
     end
 
-    return pointsEarned
+    return pointsEarned, playerHit
 end
 
 return collisions

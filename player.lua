@@ -77,6 +77,13 @@ function player:draw()
         love.graphics.translate(self.x, self.y)
         love.graphics.rotate(self.angle)
         love.graphics.polygon("fill", self.shape)
+
+        -- Draw 'flame' behind player
+        if love.keyboard.isDown("up") then
+            if math.random() > 0.5 then
+                love.graphics.polygon("line", -10, -5, -25, 0, -10, 5)
+            end
+        end
     love.graphics.pop()
 end
 
